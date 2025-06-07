@@ -1,16 +1,14 @@
-// Background service to ingest TWWWSS data from a websocket
-
 using System.Net.WebSockets;
 using System.Text;
 
-public interface IMessageValidator
+public interface IMessageHandler
 {
-    bool IsValid(string message);
+    Task HandleMessageAsync(string message);
 }
 
 public class TWWWSSIngestor(
     ILogger<TWWWSSIngestor> logger,
-    IMessageValidator messageValidator,
+    IMessageHandler messageHandler,
     IConfiguration configuration) : BackgroundService
 {
     private readonly string upstreamUrl = configuration.GetValue<string>("TWWWSS:UpstreamUrl") ??
@@ -94,16 +92,7 @@ public class TWWWSSIngestor(
             if (result.MessageType == WebSocketMessageType.Text)
             {
                 string message = Encoding.UTF8.GetString(buffer.AsSpan(0, result.Count));
-
-                // Validate the message using the injected validator
-                if (messageValidator.IsValid(message))
-                {
-                    logger.LogInformation("✔️ Valid message received: {Message}", message);
-                }
-                else
-                {
-                    logger.LogWarning("❌ Invalid message received: {Message}", message);
-                }
+                await messageHandler.HandleMessageAsync(message);
             }
             else
             {

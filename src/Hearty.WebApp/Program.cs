@@ -6,7 +6,7 @@ builder.Logging.AddSimpleConsole(options => options.TimestampFormat = "HH:mm:ss 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
 // Add our message validator
-builder.Services.AddSingleton<IMessageValidator, TWWWSSMessageValidator>();
+builder.Services.AddSingleton<IMessageHandler, TWWWSSMessageHandler>();
 
 // Add a background service to the DI container
 builder.Services.AddHostedService<TWWWSSIngestor>();
