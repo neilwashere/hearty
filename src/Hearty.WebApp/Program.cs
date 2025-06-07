@@ -8,8 +8,6 @@ builder.Logging.AddSimpleConsole(options => options.TimestampFormat = "HH:mm:ss 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
 // Simple pubsub implementation using in-memory channels
-
-
 builder.Services.AddSingleton(Channel.CreateUnbounded<TWWWSSMessage>());
 builder.Services.AddSingleton(sp =>
 {
@@ -25,8 +23,10 @@ builder.Services.AddSingleton(sp =>
 // Add our message validator
 builder.Services.AddSingleton<IMessageHandler, TWWWSSMessageHandler>();
 
-// Add a background service to the DI container
+// Add TWWWSS stream consumer
 builder.Services.AddHostedService<TWWWSSIngestor>();
+// Add message persistor
+builder.Services.AddHostedService<MessagePersistor>();
 
 var app = builder.Build();
 
