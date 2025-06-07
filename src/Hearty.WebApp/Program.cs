@@ -29,13 +29,13 @@ builder.Services.AddHostedService<TWWWSSIngestor>();
 builder.Services.AddHostedService<MessagePersistor>();
 
 // Add our message retriever
-builder.Services.AddScoped<MessageRetriever>();
+builder.Services.AddScoped<IMessageRetriever, MessageRetriever>();
 
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/messages", (MessageRetriever retriever, DateTime start, DateTime end) =>
+app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime end) =>
 {
     var messages = retriever.ReadByDateRange(start, end);
     return Results.Ok(messages.ToList());

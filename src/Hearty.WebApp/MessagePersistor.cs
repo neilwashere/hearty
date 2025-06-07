@@ -1,11 +1,9 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 
 /// <summary>
-/// This is the core background service that fulfills the request.
-/// It continuously reads from the channel and appends the data to a file
-/// as soon as it is received.
+/// This service persists messages from a channel to a file in a background task.
+/// It reads messages from the channel and appends them to a log file in JSON format.
+/// This could be made generic to support different message types in the future.
 /// </summary>
 public class MessagePersistor(
     ILogger<MessagePersistor> logger,

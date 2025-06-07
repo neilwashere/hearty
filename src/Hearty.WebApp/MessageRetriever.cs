@@ -1,17 +1,30 @@
 using System.Text.Json;
 
-public class MessageRetriever(ILogger<MessageRetriever> logger) 
+public interface IMessageRetriever
 {
-    private const string InputFileName = "hearty_data.log";
+    IEnumerable<string> ReadByDateRange(DateTime start, DateTime end);
+}
 
-    // Reads the file and returns data within the specified date range.
+/// <summary>
+/// This class retrieves messages from a file within a specified date range.
+/// It reads the file line by line, deserializes each line into a TWWWSSMessage object,
+/// and yields the lines that fall within the specified date range.
+/// This could be made generic to support different message types in the future.
+/// </summary>
+public class MessageRetriever(ILogger<MessageRetriever> logger) : IMessageRetriever
+{
+    private const string InputFileName = "hearty_data.log"; // TODO: Make this configurable
+
+    // Reads messages from the input file within the specified date range. 
     public IEnumerable<string> ReadByDateRange(DateTime start, DateTime end)
     {
+        // TODO: some reasonable validation of the date ranges to be considered
+
         // Convert the start and end DateTime to Unix epoch milliseconds.
         long startTimestamp = new DateTimeOffset(start).ToUnixTimeMilliseconds();
         long endTimestamp = new DateTimeOffset(end).ToUnixTimeMilliseconds();
 
-        logger.LogInformation("⌛ Retrieving messages from {Start} to {End} (timestamps: {StartTimestamp} to {EndTimestamp})", 
+        logger.LogInformation("⌛ Retrieving messages from {Start} to {End} (timestamps: {StartTimestamp} to {EndTimestamp})",
             start, end, startTimestamp, endTimestamp);
 
         // Use an iterator to efficiently yield matching lines.

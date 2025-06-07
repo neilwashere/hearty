@@ -6,6 +6,11 @@ public interface IMessageHandler
     Task HandleMessageAsync(string message);
 }
 
+/// <summary>
+/// This service connects to a TWWWSS WebSocket server and ingests messages.
+/// It handles reconnections, reads messages, and passes them to a message handler.
+/// The service runs in the background and will attempt to reconnect if the connection is lost.
+/// </summary>
 public class TWWWSSIngestor(
     ILogger<TWWWSSIngestor> logger,
     IMessageHandler messageHandler,

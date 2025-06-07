@@ -11,6 +11,10 @@ public class TWWWSSMessage {
     public int Value { get; set; }
 }
 
+/// <summary>
+/// This class handles the validation and processing of TWWWSS messages.
+/// It takes a channel writer to pass valid messages for further processing.
+/// </summary>
 public class TWWWSSMessageHandler(
     ILogger<TWWWSSMessageHandler> logger
     ,ChannelWriter<TWWWSSMessage> channelWriter
