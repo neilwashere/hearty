@@ -9,17 +9,17 @@ a fault tollerance strategy for dealing with the inevitible errors and dropouts.
 
 ## Architecture
 
-         Timeseries stream source
-         ┌───┐                   
-         │ 1 │                   
-         │   │                   
-         └─┬─┘                   
-Charts     │                     
- ┌───┐   ┌─┴─┐    ┌─┐Persistence 
- │ 4 ├───┤ 2 ├────│3│            
- │   │   │   │    └─┘            
- └───┘   └───┘                   
-          backend                
+            Timeseries stream source
+            ┌───┐                   
+            │ 1 │                   
+            │   │                   
+            └─┬─┘                   
+    Charts     │                     
+    ┌───┐   ┌─┴─┐    ┌─┐Persistence 
+    │ 4 ├───┤ 2 ├────│3│            
+    │   │   │   │    └─┘            
+    └───┘   └───┘                   
+            backend                
 
 
 This application is a standard n-tier stack comprised of some
