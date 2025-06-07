@@ -33,6 +33,8 @@ we know is that it can, and will, misbehave!
 The application has several concerns:
 
 - Streaming data sourcing
+This is configured as a background service that will startup and shutdown gracefully on application lifecycle. This is messy and has to deal with connection retries and so on. It's one responsibility is to do whatever necessary to retrieve (valid) messages and pass them on.
+
 - Data persistence
 - Data streaming for client applications (see next)
 - Basic HTML serving for frontend charts
@@ -41,6 +43,8 @@ Each of these concerns, and more besides, could be handled by distinct (micro) s
 application structure which might facilitate future extraction (but this is not a primary concern and some shortcuts have been taken).
 
 TODO - provide some more details about the architecture as it transpires
+
+
 
 3. Persistence - TODO
 
