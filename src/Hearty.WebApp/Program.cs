@@ -27,9 +27,11 @@ builder.Services.AddSingleton<IMessageHandler, TWWWSSMessageHandler>();
 builder.Services.AddHostedService<TWWWSSIngestor>();
 // Add message persistor
 builder.Services.AddHostedService<MessagePersistor>();
-
 // Add our message retriever
 builder.Services.AddScoped<IMessageRetriever, MessageRetriever>();
+
+// Add SignalR for data streaming
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -40,5 +42,7 @@ app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime e
     var messages = retriever.ReadByDateRange(start, end);
     return Results.Ok(messages.ToList());
 });
+
+app.MapHub<MessageStreamer>("/stream");
 
 app.Run();

@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SignalRClient;
 
 public class Program
 {
@@ -13,6 +13,7 @@ public class Program
         {
             services.AddTransient<IMessageValidator, HeartyMessageValidator>();
             services.AddSingleton<WebSocketClient>();
+            services.AddHostedService<SignalRClientService>();
         })
         .ConfigureLogging(logging =>
         {
@@ -20,7 +21,7 @@ public class Program
             logging.AddSimpleConsole(options => options.TimestampFormat = "HH:mm:ss ");
         });
 
-        var host = builder.Build();
+        // var host = builder.Build();
 
         // Handle graceful shutdown on Ctrl+C
         var cts = new CancellationTokenSource();
@@ -30,9 +31,10 @@ public class Program
             cts.Cancel();
         };
 
-        var client = host.Services.GetRequiredService<WebSocketClient>();
+        // var client = host.Services.GetRequiredService<WebSocketClient>();
 
-        // Start the WebSocket client
-        await client.ExecuteAsync(CancellationToken.None);
+        // // Start the WebSocket client
+        // await client.ExecuteAsync(CancellationToken.None);
+        await builder.RunConsoleAsync(cts.Token);
     }
 }

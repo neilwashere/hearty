@@ -2,7 +2,11 @@ using System.Net.WebSockets;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-
+/// <summary>
+/// This is a test websocket client to scope out the upstream TWWWSS WebSocket server.
+/// </summary>
+/// <param name="logger"></param>
+/// <param name="messageValidator"></param>
 public class WebSocketClient(ILogger<WebSocketClient> logger, IMessageValidator messageValidator)
 {
     private readonly ILogger<WebSocketClient> _logger = logger;
