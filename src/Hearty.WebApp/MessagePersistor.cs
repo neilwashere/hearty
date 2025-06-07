@@ -22,7 +22,7 @@ public class MessagePersistor(
         {
             await foreach (var data in channelReader.ReadAllAsync(stoppingToken))
             {
-                var lineToWrite = $"{{timestamp: {data.Timestamp}, value: {data.Value}}}";
+                var lineToWrite = $"{{\"timestamp\": {data.Timestamp}, \"value\": {data.Value}}}";
 
                 try
                 {
