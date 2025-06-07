@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Channels;
 
 public class TWWWSSMessage {
 
@@ -11,14 +12,16 @@ public class TWWWSSMessage {
 }
 
 public class TWWWSSMessageHandler(
-    ILogger<TWWWSSMessageHandler> logger): IMessageHandler {
+    ILogger<TWWWSSMessageHandler> logger
+    ,ChannelWriter<TWWWSSMessage> channelWriter
+    ): IMessageHandler {
 
-    public Task HandleMessageAsync(string message)
+    public async Task HandleMessageAsync(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
         {
             logger.LogWarning("Received null or empty message, which is not valid.");
-            return Task.CompletedTask;
+            return;
         }
 
         try
@@ -27,30 +30,30 @@ public class TWWWSSMessageHandler(
             if (heartyMessage == null)
             {
                 logger.LogWarning("Deserialized message is null");
-                return Task.CompletedTask;
+                return;
             }
 
             if (heartyMessage.Timestamp <= 0)
             {
                 logger.LogWarning("⏱️ Timestamp is not set correctly: {Timestamp}", heartyMessage.Timestamp);
-                return Task.CompletedTask;
+                return;
             }
 
             if (heartyMessage.Value < 0)
             {
                 logger.LogWarning("#️ Value is not set correctly: {Value}", heartyMessage.Value);
-                return Task.CompletedTask;
+                return;
             }
 
+            logger.LogInformation("✅ Valid message: {Message}", message);
+
+            await channelWriter.WriteAsync(heartyMessage);
+
         }
-        catch (System.Text.Json.JsonException ex)
+        catch (JsonException)
         {
             logger.LogWarning("💥 Invalid JSON: {Message}", message);
-            return Task.CompletedTask;
+            return;
         }
-
-        logger.LogInformation("✅ Valid message: {Message}", message);
-
-        return Task.CompletedTask;
     }
 }
