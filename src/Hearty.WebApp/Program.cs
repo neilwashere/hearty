@@ -35,7 +35,7 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Welcome to Hearty WebApp!");
 
 app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime end) =>
 {
