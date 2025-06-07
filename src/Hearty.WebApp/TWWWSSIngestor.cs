@@ -52,7 +52,7 @@ public class TWWWSSIngestor(
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "❌ Connection to WebSocket failed or was lost unexpectedly.");
+                logger.LogError("❌ Connection to WebSocket failed or was lost unexpectedly: {messaage}", ex.Message);
                 if (!linkedCts.IsCancellationRequested)
                 {
                     // Stop ongoing read requests before attempting to reconnect

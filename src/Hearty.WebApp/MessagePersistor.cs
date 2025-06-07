@@ -25,6 +25,8 @@ public class MessagePersistor(
                 try
                 {
                     // Append the single line to the file immediately.
+                    logger.LogInformation("📥 Writing line to file: {Line}", lineToWrite);
+
                     await File.AppendAllTextAsync(OutputFileName, lineToWrite + Environment.NewLine, stoppingToken);
                 }
                 catch (IOException ex)
