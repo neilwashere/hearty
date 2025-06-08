@@ -45,9 +45,8 @@ app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime e
 // Streaming endpoint for real-time data
 app.MapHub<MessageStreamer>("/stream");
 
-app.UseStaticFiles(); // Serve static files from wwwroot
-
-// Default route to serve the index.html file
-app.MapGet("/", () => Results.Redirect("/index.html"));
+// Serve static and default files from wwwroot
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.Run();
