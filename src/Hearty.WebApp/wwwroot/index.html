@@ -3,37 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearty realtime dashboard</title>
+    <title>Hearty Dashboards</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="main-header">
-        <h1>Live Dashboard</h1>
+        <h1>Hearty Dashboards</h1>
     </header>
-
-    <main class="content-wrapper">
-
-        <div class="left-panel">
-            <div class="chart-container">
-                <canvas id="realtimeChart"></canvas>
-            </div>
-        </div>
-
-        <div class="right-panel">
-            <div class="aggregates-container">
-                <h2>Live Aggregates</h2>
-                <p><strong>Min:</strong> <span id="minValue">N/A</span></p>
-                <p><strong>Max:</strong> <span id="maxValue">N/A</span></p>
-                <p><strong>Avg:</strong> <span id="avgValue">N/A</span></p>
-            </div>
-        </div>
-
-    </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="app.js"></script>
+        <p>Welcome to the Hearty Dashboards. Use the navigation links to switch between live and historical data views.</p>
+        <p>For live data, the dashboard will automatically update with real-time metrics. For historical data, you can select a time range to query past data.</p>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="live.html">Live Dashboard</a></li>
+            <li><a href="historical.html">Historical Dashboard</a></li>
+        </ul>
+    </nav>
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearty realtime dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>Live Dashboard</h1>
+    </header>
+
+    <main class="content-wrapper">
+
+        <div class="left-panel">
+            <div class="chart-container">
+                <canvas id="realtimeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="aggregates-container">
+                <h2>Live Aggregates</h2>
+                <p><strong>Min:</strong> <span id="minValue">N/A</span></p>
+                <p><strong>Max:</strong> <span id="maxValue">N/A</span></p>
+                <p><strong>Avg:</strong> <span id="avgValue">N/A</span></p>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="live.js"></script>
+</body>
+</html>
