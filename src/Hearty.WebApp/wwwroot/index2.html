@@ -8,8 +8,9 @@
 </head>
 <body>
     <section class="historical-controls">
-    <h2>Explore Historical Data</h2>
+    <h2>Explore Historical HRM Data</h2>
     <p>Select a time range to query past data. The end date is always the current time.</p>
+    <p>Use scroll over the chart to zoom in and out of the data.</p>
 
     <form id="dateRangeForm">
         <div class="form-group">
@@ -28,12 +29,27 @@
         <button type="submit">Get Historical Data</button>
     </form>
 
-    <div class="results-container">
-        <h3>Query Result</h3>
-        <pre id="queryResult">No data loaded yet.</pre>
+    <div id="historical-chart-section" class="content-wrapper" style="display: none;">
+
+        <div class="left-panel">
+            <div class="chart-container">
+                <canvas id="historicalChart"></canvas>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="aggregates-container">
+                <h2>Visible Range Aggregates</h2>
+                <p><strong>Minimum Value:</strong> <span id="historicalMinValue">N/A</span></p>
+                <p><strong>Maximum Value:</strong> <span id="historicalMaxValue">N/A</span></p>
+                <p><strong>Average Value:</strong> <span id="historicalAvgValue">N/A</span></p>
+            </div>
+        </div>
     </div>
 </section>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <script src="app2.js"></script>
 </body>
 </html>
