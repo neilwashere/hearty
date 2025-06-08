@@ -11,11 +11,15 @@ public interface IMessageRetriever
 /// and yields the lines that fall within the specified date range.
 /// This could be made generic to support different message types in the future.
 /// </summary>
-public class MessageRetriever(ILogger<MessageRetriever> logger) : IMessageRetriever
+public class MessageRetriever(
+    ILogger<MessageRetriever> logger,
+    IConfiguration configuration
+    ) : IMessageRetriever
 {
-    private const string InputFileName = "hearty_data.log"; // TODO: Make this configurable
+    private readonly string inputFileName =
+        configuration.GetValue<string>("Hearty:PersistenceFilePath") ?? "./hearty_data.log";
 
-    // Reads messages from the input file within the specified date range. 
+    // Reads messages from the input file within the specified date range.
     public IEnumerable<string> ReadByDateRange(DateTime start, DateTime end)
     {
         // TODO: some reasonable validation of the date ranges to be considered
@@ -29,7 +33,7 @@ public class MessageRetriever(ILogger<MessageRetriever> logger) : IMessageRetrie
 
         // Use an iterator to efficiently yield matching lines.
         // Allow the caller to figure out how to present the data (eg. wrapping into an array).
-        foreach (var line in File.ReadLines(InputFileName))
+        foreach (var line in File.ReadLines(inputFileName))
         {
             bool shouldYield = false;
             try
