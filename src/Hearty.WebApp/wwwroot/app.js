@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Establish a connection to the SignalR hub
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:5030/stream") // TODO: move to config
+        .withUrl("/stream")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
