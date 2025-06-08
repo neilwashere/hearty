@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearty historical dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="historical-controls">
+    <h2>Explore Historical Data</h2>
+    <p>Select a time range to query past data. The end date is always the current time.</p>
+
+    <form id="dateRangeForm">
+        <div class="form-group">
+            <label for="timeValue">Look back by:</label>
+            <input type="number" id="timeValue" value="10" min="1" required>
+        </div>
+        <div class="form-group">
+            <label for="timeUnit">Time unit:</label>
+            <select id="timeUnit">
+                <option value="seconds">Seconds</option>
+                <option value="minutes" selected>Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+            </select>
+        </div>
+        <button type="submit">Get Historical Data</button>
+    </form>
+
+    <div class="results-container">
+        <h3>Query Result</h3>
+        <pre id="queryResult">No data loaded yet.</pre>
+    </div>
+</section>
+
+    <script src="app2.js"></script>
+</body>
+</html>

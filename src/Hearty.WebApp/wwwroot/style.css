@@ -64,3 +64,73 @@ body {
         flex: 1;
     }
 }
+
+/* Historical Controls */
+
+.historical-controls {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+#dateRangeForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap; /* Allows form to stack on small screens */
+    margin: 1.5rem 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    color: #555;
+}
+
+#dateRangeForm input,
+#dateRangeForm select,
+#dateRangeForm button {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#dateRangeForm button {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    align-self: flex-end; /* Aligns button with bottom of inputs */
+}
+
+#dateRangeForm button:hover {
+    background-color: #2980b9;
+}
+
+.results-container {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+#queryResult {
+    background-color: #2d3436;
+    color: #dfe6e9;
+    padding: 1rem;
+    border-radius: 5px;
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-break: break-all;
+    max-height: 300px;
+    overflow-y: auto;
+}
