@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
-    // Chart.js Config.
     // A line chart to display real-time BPM data.
     // The chart will update as new data comes in from the SignalR stream.
     const ctx = document.getElementById('realtimeChart').getContext('2d');
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Stream Data from SignalR Hub
     // This function will wait for the connection to be established before subscribing to the stream.
-    // We shouldn't have to call this function multiple times, as it will handle reconnections automatically.
     async function stream() {
 
         while (connection.state !== signalR.HubConnectionState.Connected) {
@@ -75,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
-        // --- SignalR Stream Subscription ---
         connection.stream("StreamData")
             .subscribe({
                 next: (data) => {

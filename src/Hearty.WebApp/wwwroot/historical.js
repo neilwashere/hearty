@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // --- New code for Historical Data Form and Chart ---
-
     const dateRangeForm = document.getElementById('dateRangeForm');
     const queryResultEl = document.getElementById('queryResult');
 
@@ -11,13 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const historicalAvgValueEl = document.getElementById('historicalAvgValue');
     const historicalCanvas = document.getElementById('historicalChart');
 
-    // Use 'let' because we will destroy and re-create the chart on new data fetches
     let historicalChart = null;
 
-    /**
-     * Calculates and updates the aggregate values based on the currently visible data in the chart.
-     * @param {Chart} chart - The Chart.js instance.
-     */
+    // Calculates and updates the aggregate values based on the currently visible data in the chart.
     function updateHistoricalAggregates(chart) {
         const { min, max } = chart.scales.x; // Get the min/max timestamp of the visible range
 
@@ -45,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dateRangeForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        // ... (The date calculation logic is the same as before)
         const timeValue = parseInt(document.getElementById('timeValue').value, 10);
         const timeUnit = document.getElementById('timeUnit').value;
 
@@ -80,23 +73,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const data = await response.json();
 
-            // --- Chart Creation Logic ---
-
-            // 1. Destroy the old chart instance if it exists
+            // Destroy the old chart instance if it exists
             if (historicalChart) {
                 historicalChart.destroy();
             }
 
-            // 2. Format API data for Chart.js ({timestamp, value} -> {x, y})
+            // Format API data for Chart.js ({timestamp, value} -> {x, y})
             const chartData = data.map(item => {
                 let parsed = JSON.parse(item);
                 return { x: new Date(parsed.timestamp), y: parsed.value }
             });
 
-            // 3. Make the chart section visible
+            // Make the chart section visible
             historicalChartSection.style.display = 'flex';
 
-            // 4. Create the new chart instance
+            // Create the new chart instance
             historicalChart = new Chart(historicalCanvas, {
                 type: 'line',
                 data: {
@@ -150,11 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // 5. Calculate initial aggregates for the entire dataset
+            // Calculate initial aggregates for the entire dataset
             updateHistoricalAggregates(historicalChart);
 
         } catch (error) {
-            console.error('Error fetching/rendering historical data:', error);
+            console.error('💥 Error fetching/rendering historical data:', error);
         }
     });
 
