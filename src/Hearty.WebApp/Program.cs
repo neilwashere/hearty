@@ -35,14 +35,19 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Welcome to Hearty WebApp!");
-
+// Endpoint to retrieve messages based on a date range
 app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime end) =>
 {
     var messages = retriever.ReadByDateRange(start, end);
     return Results.Ok(messages.ToList());
 });
 
+// Streaming endpoint for real-time data
 app.MapHub<MessageStreamer>("/stream");
+
+app.UseStaticFiles(); // Serve static files from wwwroot
+
+// Default route to serve the index.html file
+app.MapGet("/", () => Results.Redirect("/index.html"));
 
 app.Run();
