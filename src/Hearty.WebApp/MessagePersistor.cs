@@ -7,10 +7,12 @@ using System.Threading.Channels;
 /// </summary>
 public class MessagePersistor(
     ILogger<MessagePersistor> logger,
-    ChannelReader<TWWWSSMessage> channelReader
+    ChannelReader<TWWWSSMessage> channelReader,
+    IConfiguration configuration
 ) : BackgroundService
 {
-    private const string OutputFileName = "hearty_data.log";
+    private readonly string outputFileName =
+        configuration.GetValue<string>("Hearty:PersistenceFilePath") ?? "./hearty_data.log";
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -27,11 +29,11 @@ public class MessagePersistor(
                     // Append the single line to the file immediately.
                     logger.LogInformation("📥 Writing line to file: {Line}", lineToWrite);
 
-                    await File.AppendAllTextAsync(OutputFileName, lineToWrite + Environment.NewLine, stoppingToken);
+                    await File.AppendAllTextAsync(outputFileName, lineToWrite + Environment.NewLine, stoppingToken);
                 }
                 catch (IOException ex)
                 {
-                    logger.LogError(ex, "💥 Failed to write to file {FileName}.", OutputFileName);
+                    logger.LogError(ex, "💥 Failed to write to file {FileName}.", outputFileName);
                 }
             }
         }
