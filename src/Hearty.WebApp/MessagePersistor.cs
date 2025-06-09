@@ -12,11 +12,22 @@ public class MessagePersistor(
 ) : BackgroundService
 {
     private readonly string outputFileName =
-        configuration.GetValue<string>("Hearty:PersistenceFilePath") ?? "./hearty_data.log";
+        configuration.GetValue<string>("Hearty:PersistenceFilePath")!;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("📂 File Processor Service is starting.");
+
+        try
+        {
+            // Create the file if it does not exist
+            await File.WriteAllTextAsync(outputFileName, string.Empty, stoppingToken);
+        }
+        catch (IOException ex)
+        {
+            logger.LogError(ex, "💥 Failed to create file {FileName}.", outputFileName);
+            return; // Exit if we can't create the file
+        }
 
         try
         {

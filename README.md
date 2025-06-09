@@ -24,8 +24,13 @@ Clone the repo then from within the root folder you have two options
 
 In either scenario, the default configuration will have the server listening on `http://localhost:5030`
 
+## Running the tests
 
-## Tech notes
+No docker for this as I don't have any time left.
+
+      dotnet test
+
+### Tech notes
 
             Remote data source
             ┌───┐
@@ -85,6 +90,8 @@ upstream source, backend server, some basic persistence and a user facing asset.
 
    [ChartJS](https://www.chartjs.org/) (along with SignalR client) is the only external frontend dependency. This is a reasonably well documented and competent open source charting solution which is more than enough for this MVP. I spent a little bit of time looking at [highcharts](https://www.highcharts.com/) - this is something I would consider if taking this solution to market - utterly gorgeous
 
+   [azure](https://azure.microsoft.com) has been used for hosting for no other reason than I have some free credits and it plays nicely with dotnet stuff out of the box (as you might expect for microsoft). The application uses a github workflow to build and deploy on commits to the `main` branch.
+
 #### What to do with some more time
 There are some very obvious, and not so obvious, problems with the current solution:
 
@@ -110,7 +117,10 @@ There are some very obvious, and not so obvious, problems with the current solut
 
 6. Tests
 
-   Although at number 6, this is not ordered by importance! My approach throughout this endevour has been manual exploration (the console project in `explore` was my entry point). As happens quite often with front end stuff, manual checks are just simpler at the start. I mean, sure, I haven't really created many meaningful tests at all. Is EDD (exploration driven development) a thing? YES! I would spend some quality time adding regression tests for the bits of the system that we want to keep and/or don't want to interrupt whilst we refactor/grow/adapt. TDD is lovely in existing code bases and I'm not afraid to use it. For stuff like this which is more about choices than outcomes, my choice was to favour delivery. This is classic technical debt territory which is a place I know well. Oh do I have some stories to tell...
+   Although at number 6, this is not ordered by importance! My approach throughout this endevour has been manual exploration (the console project in `explore` was my entry point). I have some very cursory regression tests for the backend stuff but these are by no means comprehensive, well structured or robust.
+
+   As happens quite often with front end stuff, manual checks are just simpler at the start so there are ZERO browser behaviour / view tests. 👀 eyeballing is good enough for now.
+
 
 7. Structure
 
@@ -124,5 +134,3 @@ There are some very obvious, and not so obvious, problems with the current solut
 #### Some things I really like about this solution
 
 Have I mentioned how few dependencies there are? From an MVP perspective we've managed to hit all of the high notes without constraining any future steps or making expensive choices. What has been used has been minimal and to the point. Very few, if any, assumptions have been made.
-
-I really, really like dotnet core. It's a joy to work with.

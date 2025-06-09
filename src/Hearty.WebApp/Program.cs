@@ -33,6 +33,7 @@ builder.Services.AddScoped<IMessageRetriever, MessageRetriever>();
 // Add SignalR for data streaming
 builder.Services.AddSignalR();
 
+
 var app = builder.Build();
 
 // Endpoint to retrieve messages based on a date range

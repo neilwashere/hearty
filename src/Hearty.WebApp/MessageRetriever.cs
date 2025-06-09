@@ -11,13 +11,32 @@ public interface IMessageRetriever
 /// and yields the lines that fall within the specified date range.
 /// This could be made generic to support different message types in the future.
 /// </summary>
-public class MessageRetriever(
-    ILogger<MessageRetriever> logger,
-    IConfiguration configuration
-    ) : IMessageRetriever
+public class MessageRetriever : IMessageRetriever
 {
-    private readonly string inputFileName =
-        configuration.GetValue<string>("Hearty:PersistenceFilePath") ?? "./hearty_data.log";
+    private readonly ILogger<MessageRetriever> logger;
+    private readonly string inputFileName;
+
+    public MessageRetriever(ILogger<MessageRetriever> logger, IConfiguration configuration)
+    {
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        inputFileName = configuration.GetValue<string>("Hearty:PersistenceFilePath")!;
+
+        // Create the file if it does not exist
+        // TODO: This is a bit of a hack to deal with test isolation issues and, of course, because
+        // we are using a file for persistence! (do not try this at home, kids!)
+        if (!File.Exists(inputFileName))
+        {
+            try
+            {
+                File.Create(inputFileName).Dispose(); // Ensure the file is created
+            }
+            catch (IOException ex)
+            {
+                logger.LogError(ex, "💥 Failed to create input file {InputFileName}.", inputFileName);
+                throw; // Rethrow to ensure the application can handle this failure
+            }
+        }
+    }
 
     // Reads messages from the input file within the specified date range.
     public IEnumerable<string> ReadByDateRange(DateTime start, DateTime end)
