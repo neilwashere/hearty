@@ -20,4 +20,4 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Run all integration and unit tests
-        run: dotnet test tests/Hearty.Tests/Hearty.Tests.csproj --no-build --logger "console;verbosity=detailed"
+        run: dotnet test tests/Hearty.Tests/Hearty.Tests.csproj

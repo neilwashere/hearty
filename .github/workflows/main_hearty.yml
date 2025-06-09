@@ -24,12 +24,12 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Run all integration and unit tests
-        run: dotnet test tests/Hearty.Tests/Hearty.Tests.csproj --no-build
+        run: dotnet test tests/Hearty.Tests/Hearty.Tests.csproj
 
-      - name: Build with dotnet
+      - name: Build release config
         run: dotnet build src/Hearty.WebApp/Hearty.WebApp.csproj --configuration Release
 
-      - name: dotnet publish
+      - name: Publish
         run: dotnet publish src/Hearty.WebApp/Hearty.WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
