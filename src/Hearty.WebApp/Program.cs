@@ -28,20 +28,15 @@ builder.Services.AddHostedService<TWWWSSIngestor>();
 // Add message persistor
 builder.Services.AddHostedService<MessagePersistor>();
 // Add our message retriever
-builder.Services.AddScoped<IMessageRetriever, MessageRetriever>();
+builder.Services.AddScoped<ITimeSeriesMessageRetriever<TWWWSSMessage>, MessageRetriever>();
 
 // Add SignalR for data streaming
 builder.Services.AddSignalR();
 
+// Add Razor Pages for the web interface
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
-
-// Endpoint to retrieve messages based on a date range
-app.MapGet("/messages", (IMessageRetriever retriever, DateTime start, DateTime end) =>
-{
-    var messages = retriever.ReadByDateRange(start, end);
-    return Results.Ok(messages.ToList());
-});
 
 // Streaming endpoint for real-time data
 app.MapHub<MessageStreamer>("/stream");
@@ -49,6 +44,8 @@ app.MapHub<MessageStreamer>("/stream");
 // Serve static and default files from wwwroot
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+app.MapRazorPages();
 
 app.Run();
 

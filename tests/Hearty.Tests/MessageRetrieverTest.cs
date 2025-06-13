@@ -49,10 +49,7 @@ public class MessageRetrieverTests
 
         var start = now.AddMinutes(-6);
         var end = now;
-        var results = retriever.ReadByDateRange(start, end)
-        .ToList()
-            .Select(line => JsonSerializer.Deserialize<TWWWSSMessage>(line))
-            .ToList();
+        var results = retriever.ReadByDateRange(start, end).ToList();
 
         Assert.Single(results, m => m != null && m.Value == 2);
         Assert.Single(results, m => m != null && m.Value == 3);

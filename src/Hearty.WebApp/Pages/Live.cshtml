@@ -1,0 +1,29 @@
+@page
+@namespace Hearty.WebApp.Pages
+@model LiveModel
+@{
+    ViewData["Title"] = "Live Chart";
+}
+
+<div class="content-wrapper">
+
+    <div class="left-panel">
+        <div class="chart-container">
+            <canvas id="realtimeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="aggregates-container">
+            <h2>Live Aggregates</h2>
+            <p><strong>Min:</strong> <span id="minValue">N/A</span></p>
+            <p><strong>Max:</strong> <span id="maxValue">N/A</span></p>
+            <p><strong>Avg:</strong> <span id="avgValue">N/A</span></p>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/live.js"></script>
+}

@@ -1,17 +1,23 @@
 using System.Text.Json;
 
-public interface IMessageRetriever
+public interface ITimeSeriesMessageRetriever<T>
 {
-    IEnumerable<string> ReadByDateRange(DateTime start, DateTime end);
+    /// <summary>
+    /// Reads messages from the persistence store within the specified date range.
+    /// </summary>
+    /// <param name="start">The start date and time of the range.</param>
+    /// <param name="end">The end date and time of the range.</param>
+    /// <returns>An enumerable collection of messages as strings.</returns>
+    IEnumerable<T> ReadByDateRange(DateTime start, DateTime end);
 }
 
 /// <summary>
 /// This class retrieves messages from a file within a specified date range.
 /// It reads the file line by line, deserializes each line into a TWWWSSMessage object,
 /// and yields the lines that fall within the specified date range.
-/// This could be made generic to support different message types in the future.
+/// TODO - make generic to support different message types.
 /// </summary>
-public class MessageRetriever : IMessageRetriever
+public class MessageRetriever : ITimeSeriesMessageRetriever<TWWWSSMessage>
 {
     private readonly ILogger<MessageRetriever> logger;
     private readonly string inputFileName;
@@ -39,7 +45,7 @@ public class MessageRetriever : IMessageRetriever
     }
 
     // Reads messages from the input file within the specified date range.
-    public IEnumerable<string> ReadByDateRange(DateTime start, DateTime end)
+    public IEnumerable<TWWWSSMessage> ReadByDateRange(DateTime start, DateTime end)
     {
         // TODO: some reasonable validation of the date ranges to be considered
 
@@ -54,25 +60,23 @@ public class MessageRetriever : IMessageRetriever
         // Allow the caller to figure out how to present the data (eg. wrapping into an array).
         foreach (var line in File.ReadLines(inputFileName))
         {
-            bool shouldYield = false;
+            var record = default(TWWWSSMessage);
+            bool isValidRecord = false;
             try
             {
-                var record = JsonSerializer.Deserialize<TWWWSSMessage>(line);
+                record = JsonSerializer.Deserialize<TWWWSSMessage>(line);
 
                 // Check if the timestamp is within the specified range.
                 if (record != null && record.Timestamp >= startTimestamp && record.Timestamp <= endTimestamp)
-                {
-                    shouldYield = true;
-                }
+                    isValidRecord = true;
             }
             catch (JsonException ex)
             {
                 logger.LogError(ex, "💥 Invalid JSON line: {Line} from persistence!", line);
             }
-            if (shouldYield)
-            {
-                yield return line;
-            }
+
+            if (isValidRecord)
+                yield return record!;
         }
     }
 }

@@ -18,15 +18,18 @@ public class MessagePersistor(
     {
         logger.LogInformation("📂 File Processor Service is starting.");
 
-        try
+        if (!File.Exists(outputFileName))
         {
-            // Create the file if it does not exist
-            await File.WriteAllTextAsync(outputFileName, string.Empty, stoppingToken);
-        }
-        catch (IOException ex)
-        {
-            logger.LogError(ex, "💥 Failed to create file {FileName}.", outputFileName);
-            return; // Exit if we can't create the file
+            try
+            {
+                logger.LogInformation("📂 Creating file {FileName}.", outputFileName);
+                await File.WriteAllTextAsync(outputFileName, string.Empty, stoppingToken);
+            }
+            catch (IOException ex)
+            {
+                logger.LogError(ex, "💥 Failed to create file {FileName}.", outputFileName);
+                throw;
+            }
         }
 
         try

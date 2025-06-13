@@ -1,0 +1,55 @@
+@page
+@namespace Hearty.WebApp.Pages
+@model HistoricalModel
+@{
+    ViewData["Title"] = "Historical Chart";
+}
+
+<div class="historical-controls">
+    <p>Select a time range to query past data. The end date is always the current time.</p>
+    <p>Use scroll over the chart to zoom in and out of the data.</p>
+
+    <form method="get" id="dateRangeForm">
+        <div class="form-group">
+            <label asp-for="TimeValue">Look back by:</label>
+            <input type="number" asp-for="TimeValue" min="1" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeUnit">Time unit:</label>
+            <select asp-for="TimeUnit">
+                <option value="seconds">Seconds</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+            </select>
+        </div>
+        <button type="submit">Get Historical Data</button>
+    </form>
+</div>
+<div id="historical-chart-section" class="content-wrapper" style="display: none;">
+
+    <div class="left-panel">
+        <div class="chart-container">
+            <canvas id="historicalChart"></canvas>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="aggregates-container">
+            <h2>Visible Range Aggregates</h2>
+            <p><strong>Min:</strong> <span id="historicalMinValue">N/A</span></p>
+            <p><strong>Max:</strong> <span id="historicalMaxValue">N/A</span></p>
+            <p><strong>Avg:</strong> <span id="historicalAvgValue">N/A</span></p>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/historical.js"></script>
+
+    <script>
+        initialiseHistoricalChart(@Html.Raw(Model.ChartDataJson));
+    </script>
+
+}
